@@ -145,11 +145,13 @@ def main():
     app.add_error_handler(error_handler)
     
     # Lancement du webhook (attention à l'indentation)
-    app.run_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        webhook_url=WEBHOOK_URL
-    )
+   app.run_webhook(
+    listen="0.0.0.0",
+    port=PORT,
+    webhook_url=WEBHOOK_URL,  # ton URL publique
+    webhook_path="/",          # la racine
+    secret_token=TOKEN         # sécurise le webhook
+)
 
 if __name__ == "__main__":
     main()
