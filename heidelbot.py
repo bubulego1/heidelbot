@@ -131,27 +131,30 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 
 # Fonction principale
 def main():
+    import os
+    from telegram.ext import ApplicationBuilder
+
     TOKEN = os.environ.get("TELEGRAM_TOKEN")
     WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
     PORT = int(os.environ.get("PORT", 8443))
-    
+
     app = ApplicationBuilder().token(TOKEN).build()
-    
+
     # Ajout des handlers
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("get", get_question))
     app.add_handler(CommandHandler("recherche", search_question))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
     app.add_error_handler(error_handler)
-    
-    # Lancement du webhook (attention à l'indentation)
+
+    # Lancement du webhook
     app.run_webhook(
         listen="0.0.0.0",
         port=PORT,
-        webhook_url=WEBHOOK_URL,  # ton URL publique
-        webhook_path="/",          # la racine
-        secret_token=TOKEN         # sécurise le webhook
+        webhook_url=f"{WEBHOOK_URL}/{TOKEN}",  # URL complète pour Telegram
+        secret_token=TOKEN                      # sécurise le webhook
     )
 
 if __name__ == "__main__":
     main()
+
