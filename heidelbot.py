@@ -144,14 +144,11 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
     app.add_error_handler(error_handler)
     
-    # Lancement du webhook
-   import os
-port = int(os.environ.get("PORT", 10000))
-
-app.run_webhook(
-    listen="0.0.0.0",
-    port=port,
-    webhook_url=f"{WEBHOOK_URL}/{TOKEN}"
+    # Lancement du webhook (attention à l'indentation)
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=PORT,
+        webhook_url=f"{WEBHOOK_URL}/{TOKEN}"
     )
 
 if __name__ == "__main__":
